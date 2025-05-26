@@ -178,6 +178,181 @@
             text-align: center;
         }
 
+        /* خريطة العالم التفاعلية */
+        .world-map-container {
+            position: fixed;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1000px;
+            height: 400px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #FFD700;
+            border-radius: 20px;
+            padding: 20px;
+            display: none;
+            z-index: 200;
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+
+        .world-map {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: url('/map2.png');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .map-point {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #FFD700;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            animation: mapPointAppear 0.5s ease-out forwards;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .map-point:hover {
+            transform: translate(-50%, -50%) scale(2);
+            box-shadow: 0 0 20px #FFD700;
+        }
+
+        .map-point::after {
+            content: attr(data-city);
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: #FFD700;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .map-point:hover::after {
+            opacity: 1;
+        }
+
+        @keyframes mapPointAppear {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        .map-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #FFD700, transparent);
+            transform-origin: left center;
+            opacity: 0;
+            animation: mapLineAppear 1s ease-out forwards;
+        }
+
+        @keyframes mapLineAppear {
+            from {
+                opacity: 0;
+                transform: scaleX(0);
+            }
+            to {
+                opacity: 0.6;
+                transform: scaleX(1);
+            }
+        }
+
+        .map-toggle-btn {
+            position: fixed;
+            top: 90px;
+            right: 30px;
+            background: rgba(255, 215, 0, 0.2);
+            border: 2px solid #FFD700;
+            color: #FFD700;
+            padding: 10px 15px;
+            border-radius: 30px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .map-toggle-btn:hover {
+            background: #FFD700;
+            color: #000;
+        }
+
+        /* لوحة المعلومات الحية */
+        .live-dashboard {
+            position: fixed;
+            bottom: 150px;
+            right: 30px;
+            width: 300px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #FFD700;
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            z-index: 150;
+            transition: all 0.3s ease;
+        }
+
+        .dashboard-title {
+            color: #FFD700;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .dashboard-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .dashboard-item:hover {
+            background: rgba(255, 215, 0, 0.2);
+            transform: translateX(-5px);
+        }
+
+        .dashboard-label {
+            font-size: 0.9rem;
+            color: #ccc;
+            margin-bottom: 5px;
+        }
+
+        .dashboard-value {
+            font-size: 1.8rem;
+            color: #FFD700;
+            font-weight: bold;
+        }
+
+        .dashboard-value.counting {
+            animation: countPulse 0.5s ease-out;
+        }
+
+        @keyframes countPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
         /* أزرار التحكم */
         .controls {
             position: fixed;
@@ -216,12 +391,13 @@
         .timeline {
             position: fixed;
             top: 50%;
-            right: 30px;
+            right: 350px;
             transform: translateY(-50%);
             display: flex;
             flex-direction: column;
             gap: 12px;
             z-index: 100;
+            transition: all 0.3s ease;
         }
 
         .timeline-item {
@@ -442,6 +618,15 @@
             .controls { bottom: 20px; }
             .control-btn { width: 50px; height: 50px; }
             .stats { justify-content: center; }
+            .live-dashboard { 
+                width: 200px; 
+                right: 10px;
+                bottom: 100px;
+            }
+            .world-map-container {
+                width: 95%;
+                height: 300px;
+            }
         }
     </style>
 </head>
@@ -453,6 +638,41 @@
         <button id="soundToggle">
             <i class="fas fa-volume-up"></i> الصوت
         </button>
+    </div>
+    
+    <!-- زر خريطة العالم -->
+    <button class="map-toggle-btn" id="mapToggle">
+        <i class="fas fa-globe"></i> خريطة الانتشار
+    </button>
+    
+    <!-- خريطة العالم التفاعلية -->
+    <div class="world-map-container" id="worldMapContainer">
+        <div class="world-map" id="worldMap"></div>
+    </div>
+    
+    <!-- لوحة المعلومات الحية -->
+    <div class="live-dashboard">
+        <div class="dashboard-title">
+            <i class="fas fa-chart-line"></i> إحصائيات حية
+        </div>
+        <div class="dashboard-item">
+            <div class="dashboard-label">السنة الحالية</div>
+            <div class="dashboard-value" id="currentYear">1907</div>
+        </div>
+        <div class="dashboard-item">
+            <div class="dashboard-label">عدد الموظفين</div>
+            <div class="dashboard-value" id="employeeCount">2</div>
+        </div>
+        <div class="dashboard-item">
+            <div class="dashboard-label">المدن المخدومة</div>
+            <div class="dashboard-value" id="citiesCount">1</div>
+        </div>
+        <div class="dashboard-item">
+            <div class="dashboard-label">وسيلة النقل</div>
+            <div class="dashboard-value" id="transportMode">
+                <i class="fas fa-walking"></i>
+            </div>
+        </div>
     </div>
     
     <div class="presentation-container">
@@ -906,13 +1126,6 @@
         <button class="control-btn" id="nextBtn"><i class="fas fa-chevron-down"></i></button>
     </div>
     
-    <!-- المؤثرات الصوتية -->
-    <audio id="bgMusic" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="slideSound" src="data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQQAAAAAA"></audio>
-    <audio id="clickSound" src="data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQQAAAAAA"></audio>
-    
     <!-- الجسيمات المتحركة -->
     <script>
         // إنشاء الجسيمات
@@ -940,57 +1153,500 @@
         const playBtn = document.getElementById('playBtn');
         const scrollIndicator = document.querySelector('.scroll-indicator');
         const soundToggle = document.getElementById('soundToggle');
-        const bgMusic = document.getElementById('bgMusic');
-        const slideSound = document.getElementById('slideSound');
-        const clickSound = document.getElementById('clickSound');
+        const mapToggle = document.getElementById('mapToggle');
+        const worldMapContainer = document.getElementById('worldMapContainer');
+        const worldMap = document.getElementById('worldMap');
         
         let isPlaying = false;
         let autoPlayInterval;
         let isTransitioning = false;
         let soundEnabled = false;
+        let mapVisible = false;
+        
+        // بيانات لوحة المعلومات
+        const dashboardData = [
+            { year: 'البداية', employees: 0, cities: 0, transport: '<i class="fas fa-question"></i>' },
+            { year: '1907', employees: 2, cities: 1, transport: '<i class="fas fa-walking"></i> <i class="fas fa-bicycle"></i>' },
+            { year: '1913', employees: 10, cities: 1, transport: '<i class="fas fa-truck"></i>' },
+            { year: '1919', employees: 50, cities: 2, transport: '<i class="fas fa-truck"></i>' },
+            { year: '1929', employees: 200, cities: 125, transport: '<i class="fas fa-truck"></i> <i class="fas fa-plane"></i>' },
+            { year: '1953', employees: 1000, cities: 300, transport: '<i class="fas fa-plane"></i>' },
+            { year: '1975', employees: 50000, cities: 5000, transport: '<i class="fas fa-truck"></i> <i class="fas fa-plane"></i>' },
+            { year: '1985', employees: 150000, cities: 10000, transport: '<i class="fas fa-rocket"></i>' },
+            { year: '1988', employees: 240000, cities: 15000, transport: '<i class="fas fa-plane"></i>' },
+            { year: '1999', employees: 340000, cities: 20000, transport: '<i class="fas fa-plane"></i> <i class="fas fa-truck"></i>' },
+            { year: '2000s', employees: 450000, cities: 30000, transport: '<i class="fas fa-mobile-alt"></i> <i class="fas fa-robot"></i>' },
+            { year: '2024', employees: 540000, cities: 50000, transport: '<i class="fas fa-drone"></i> <i class="fas fa-truck"></i> <i class="fas fa-plane"></i>' }
+        ];
+        
+        // بيانات الخريطة
+        const mapData = [
+            { slide: 1, points: [{ city: 'سياتل', x: 15, y: 25 }] },
+            { slide: 2, points: [{ city: 'سياتل', x: 15, y: 25 }] },
+            { slide: 3, points: [{ city: 'سياتل', x: 15, y: 25 }, { city: 'أوكلاند', x: 12, y: 40 }] },
+            { slide: 4, points: [{ city: 'سياتل', x: 15, y: 25 }, { city: 'أوكلاند', x: 12, y: 40 }, { city: 'لوس أنجلوس', x: 15, y: 45 }] },
+            { slide: 5, points: [{ city: 'سياتل', x: 15, y: 25 }, { city: 'أوكلاند', x: 12, y: 40 }, { city: 'لوس أنجلوس', x: 15, y: 45 }, { city: 'سان فرانسيسكو', x: 10, y: 38 }] },
+            { slide: 6, points: [{ city: 'نيويورك', x: 75, y: 30 }, { city: 'شيكاغو', x: 60, y: 32 }, { city: 'أتلانتا', x: 65, y: 45 }] },
+            { slide: 7, points: [{ city: 'تورنتو', x: 72, y: 28 }, { city: 'فرانكفورت', x: 50, y: 20 }] },
+            { slide: 8, points: [{ city: 'Louisville', x: 62, y: 38 }] },
+            { slide: 11, points: [{ city: 'شنغهاي', x: 85, y: 35 }, { city: 'دبي', x: 55, y: 50 }, { city: 'ساو باولو', x: 35, y: 75 }] }
+        ];
+        
+        // تحديث لوحة المعلومات
+        function updateDashboard(slideIndex) {
+            const data = dashboardData[slideIndex];
+            const yearEl = document.getElementById('currentYear');
+            const employeeEl = document.getElementById('employeeCount');
+            const citiesEl = document.getElementById('citiesCount');
+            const transportEl = document.getElementById('transportMode');
+            
+            // تحديث القيم مع تأثير العد
+            animateValue(yearEl, data.year);
+            animateValue(employeeEl, data.employees, true);
+            animateValue(citiesEl, data.cities, true);
+            transportEl.innerHTML = data.transport;
+            
+            // إضافة تأثير الوميض
+            [yearEl, employeeEl, citiesEl, transportEl].forEach(el => {
+                el.classList.add('counting');
+                setTimeout(() => el.classList.remove('counting'), 500);
+            });
+        }
+        
+        // تحريك القيم
+        function animateValue(element, value, isNumber = false) {
+            if (!isNumber) {
+                element.textContent = value;
+                return;
+            }
+            
+            const start = parseInt(element.textContent) || 0;
+            const end = value;
+            const duration = 1000;
+            const startTime = performance.now();
+            
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const current = Math.floor(start + (end - start) * progress);
+                element.textContent = current.toLocaleString();
+                
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            }
+            
+            requestAnimationFrame(update);
+        }
+        
+        // تحديث الخريطة
+        function updateMap(slideIndex) {
+            if (!mapVisible) return;
+            
+            // مسح النقاط القديمة
+            worldMap.innerHTML = '';
+            
+            // إضافة النقاط الجديدة
+            const slideData = mapData.find(d => d.slide === slideIndex);
+            if (slideData) {
+                slideData.points.forEach((point, index) => {
+                    setTimeout(() => {
+                        const dot = document.createElement('div');
+                        dot.className = 'map-point';
+                        dot.style.left = point.x + '%';
+                        dot.style.top = point.y + '%';
+                        dot.setAttribute('data-city', point.city);
+                        worldMap.appendChild(dot);
+                        
+                        // إضافة خطوط الربط
+                        if (index > 0) {
+                            const prevPoint = slideData.points[index - 1];
+                            const line = document.createElement('div');
+                            line.className = 'map-line';
+                            
+                            // حساب الخط
+                            const x1 = prevPoint.x;
+                            const y1 = prevPoint.y;
+                            const x2 = point.x;
+                            const y2 = point.y;
+                            
+                            const distance = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+                            const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+                            
+                            line.style.width = distance + '%';
+                            line.style.left = x1 + '%';
+                            line.style.top = y1 + '%';
+                            line.style.transform = `rotate(${angle}deg)`;
+                            line.style.animationDelay = `${index * 0.2}s`;
+                            
+                            worldMap.appendChild(line);
+                        }
+                    }, index * 200);
+                });
+            }
+        }
+        
+        // تبديل الخريطة
+        mapToggle.addEventListener('click', () => {
+            mapVisible = !mapVisible;
+            worldMapContainer.style.display = mapVisible ? 'block' : 'none';
+            if (mapVisible) {
+                updateMap(currentSlide + 1);
+            }
+            playClickSound();
+        });
         
         // تحكم الصوت
         soundToggle.addEventListener('click', () => {
             soundEnabled = !soundEnabled;
             if (soundEnabled) {
-                bgMusic.volume = 0.3;
-                bgMusic.play().catch(e => console.log('Audio play failed:', e));
                 soundToggle.innerHTML = '<i class="fas fa-volume-up"></i> الصوت';
+                playEraSound(currentSlide);
             } else {
-                bgMusic.pause();
                 soundToggle.innerHTML = '<i class="fas fa-volume-mute"></i> الصوت';
+                stopAllSounds();
             }
             playClickSound();
         });
         
+        // المؤثرات الصوتية لكل عصر
+        function playEraSound(slideIndex) {
+            if (!soundEnabled) return;
+            
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            
+            switch(slideIndex) {
+                case 0: // البداية - موسيقى ملحمية
+                    playOrchestralSound(audioContext);
+                    break;
+                case 1: // 1907 - أصوات المدينة القديمة
+                    playOldCitySound(audioContext);
+                    break;
+                case 2: // 1913 - صوت محرك Model T
+                    playModelTSound(audioContext);
+                    break;
+                case 3: // 1919 - صوت شاحنة قديمة
+                    playOldTruckSound(audioContext);
+                    break;
+                case 4: // 1929 - صوت طائرة قديمة
+                    playOldPlaneSound(audioContext);
+                    break;
+                case 5: // 1953 - صوت طائرة نفاثة
+                    playJetSound(audioContext);
+                    break;
+                case 6: // 1975 - أصوات مطار
+                    playAirportSound(audioContext);
+                    break;
+                case 7: // 1985 - صوت إقلاع سريع
+                    playFastJetSound(audioContext);
+                    break;
+                case 8: // 1988 - صوت مطار حديث
+                    playModernAirportSound(audioContext);
+                    break;
+                case 9: // 1999 - صوت جرس البورصة
+                    playStockBellSound(audioContext);
+                    break;
+                case 10: // 2000s - أصوات رقمية
+                    playDigitalSound(audioContext);
+                    break;
+                case 11: // اليوم - صوت احتفالي
+                    playCelebrationSound(audioContext);
+                    break;
+            }
+        }
+        
+        // صوت الخيول والعربات (1907)
+        function playOldCitySound(audioContext) {
+            // صوت حوافر الخيل
+            const oscillator1 = audioContext.createOscillator();
+            const gainNode1 = audioContext.createGain();
+            
+            oscillator1.type = 'sine';
+            oscillator1.frequency.setValueAtTime(100, audioContext.currentTime);
+            oscillator1.connect(gainNode1);
+            gainNode1.connect(audioContext.destination);
+            
+            // نمط الخطوات
+            for (let i = 0; i < 8; i++) {
+                gainNode1.gain.setValueAtTime(0, audioContext.currentTime + i * 0.3);
+                gainNode1.gain.linearRampToValueAtTime(0.1, audioContext.currentTime + i * 0.3 + 0.05);
+                gainNode1.gain.linearRampToValueAtTime(0, audioContext.currentTime + i * 0.3 + 0.1);
+            }
+            
+            oscillator1.start();
+            oscillator1.stop(audioContext.currentTime + 2.5);
+            
+            // صوت جرس الدراجة
+            setTimeout(() => {
+                const bellOsc = audioContext.createOscillator();
+                const bellGain = audioContext.createGain();
+                
+                bellOsc.frequency.setValueAtTime(2000, audioContext.currentTime);
+                bellOsc.connect(bellGain);
+                bellGain.connect(audioContext.destination);
+                bellGain.gain.setValueAtTime(0.2, audioContext.currentTime);
+                bellGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                
+                bellOsc.start();
+                bellOsc.stop(audioContext.currentTime + 0.5);
+            }, 500);
+        }
+        
+        // صوت محرك Model T (1913)
+        function playModelTSound(audioContext) {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            const filter = audioContext.createBiquadFilter();
+            
+            oscillator.type = 'sawtooth';
+            oscillator.frequency.setValueAtTime(60, audioContext.currentTime);
+            
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(200, audioContext.currentTime);
+            
+            oscillator.connect(filter);
+            filter.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            // محاكاة صوت المحرك القديم
+            for (let i = 0; i < 20; i++) {
+                oscillator.frequency.setValueAtTime(60 + Math.random() * 20, audioContext.currentTime + i * 0.1);
+            }
+            
+            gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 2);
+            
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + 2);
+        }
+        
+        // صوت طائرة قديمة (1929)
+        function playOldPlaneSound(audioContext) {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            const filter = audioContext.createBiquadFilter();
+            
+            oscillator.type = 'sawtooth';
+            oscillator.frequency.setValueAtTime(100, audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(300, audioContext.currentTime + 1);
+            oscillator.frequency.exponentialRampToValueAtTime(150, audioContext.currentTime + 2);
+            
+            filter.type = 'bandpass';
+            filter.frequency.setValueAtTime(400, audioContext.currentTime);
+            filter.Q.setValueAtTime(2, audioContext.currentTime);
+            
+            oscillator.connect(filter);
+            filter.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+            gainNode.gain.linearRampToValueAtTime(0.2, audioContext.currentTime + 0.5);
+            gainNode.gain.linearRampToValueAtTime(0.1, audioContext.currentTime + 1.5);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 2);
+            
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + 2);
+        }
+        
+        // صوت طائرة نفاثة (1953)
+        function playJetSound(audioContext) {
+            const whiteNoise = audioContext.createBufferSource();
+            const buffer = audioContext.createBuffer(1, audioContext.sampleRate * 2, audioContext.sampleRate);
+            const data = buffer.getChannelData(0);
+            
+            for (let i = 0; i < buffer.length; i++) {
+                data[i] = Math.random() * 2 - 1;
+            }
+            
+            whiteNoise.buffer = buffer;
+            
+            const filter = audioContext.createBiquadFilter();
+            filter.type = 'highpass';
+            filter.frequency.setValueAtTime(1000, audioContext.currentTime);
+            filter.frequency.exponentialRampToValueAtTime(5000, audioContext.currentTime + 1);
+            
+            const gainNode = audioContext.createGain();
+            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+            gainNode.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.5);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 2);
+            
+            whiteNoise.connect(filter);
+            filter.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            whiteNoise.start();
+        }
+        
+        // صوت جرس البورصة (1999)
+        function playStockBellSound(audioContext) {
+            const frequencies = [520, 660, 780];
+            
+            frequencies.forEach((freq, index) => {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1.5);
+                
+                oscillator.start(audioContext.currentTime + index * 0.1);
+                oscillator.stop(audioContext.currentTime + 1.5);
+            });
+        }
+        
+        // صوت رقمي (2000s)
+        function playDigitalSound(audioContext) {
+            const frequencies = [440, 554, 659, 880];
+            
+            frequencies.forEach((freq, index) => {
+                setTimeout(() => {
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.type = 'square';
+                    oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                    
+                    oscillator.start();
+                    oscillator.stop(audioContext.currentTime + 0.2);
+                }, index * 150);
+            });
+        }
+        
+        // الأصوات الأخرى...
+        function playOrchestralSound(audioContext) {
+            const frequencies = [130.81, 164.81, 196, 261.63, 329.63];
+            frequencies.forEach((freq, index) => {
+                const osc = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+                osc.frequency.setValueAtTime(freq, audioContext.currentTime);
+                osc.connect(gain);
+                gain.connect(audioContext.destination);
+                gain.gain.setValueAtTime(0.1, audioContext.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 3);
+                osc.start(audioContext.currentTime + index * 0.1);
+                osc.stop(audioContext.currentTime + 3);
+            });
+        }
+        
+        function playOldTruckSound(audioContext) {
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(80, audioContext.currentTime);
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+            gain.gain.setValueAtTime(0.2, audioContext.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1.5);
+            osc.start();
+            osc.stop(audioContext.currentTime + 1.5);
+        }
+        
+        function playAirportSound(audioContext) {
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            osc.frequency.setValueAtTime(200, audioContext.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(800, audioContext.currentTime + 1);
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+            gain.gain.setValueAtTime(0.15, audioContext.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1.5);
+            osc.start();
+            osc.stop(audioContext.currentTime + 1.5);
+        }
+        
+        function playFastJetSound(audioContext) {
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            osc.frequency.setValueAtTime(500, audioContext.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(2000, audioContext.currentTime + 0.5);
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+            gain.gain.setValueAtTime(0.2, audioContext.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1);
+            osc.start();
+            osc.stop(audioContext.currentTime + 1);
+        }
+        
+        function playModernAirportSound(audioContext) {
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(1500, audioContext.currentTime);
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+            gain.gain.setValueAtTime(0.1, audioContext.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+            osc.start();
+            osc.stop(audioContext.currentTime + 0.5);
+        }
+        
+        function playCelebrationSound(audioContext) {
+            const notes = [523.25, 659.25, 783.99, 1046.50];
+            notes.forEach((freq, index) => {
+                setTimeout(() => {
+                    const osc = audioContext.createOscillator();
+                    const gain = audioContext.createGain();
+                    osc.frequency.setValueAtTime(freq, audioContext.currentTime);
+                    osc.connect(gain);
+                    gain.connect(audioContext.destination);
+                    gain.gain.setValueAtTime(0.2, audioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                    osc.start();
+                    osc.stop(audioContext.currentTime + 0.5);
+                }, index * 200);
+            });
+        }
+        
+        function stopAllSounds() {
+            // في تطبيق حقيقي، نحتاج لتتبع جميع الأصوات النشطة وإيقافها
+        }
+        
         // تشغيل صوت النقر
         function playClickSound() {
-            if (soundEnabled) {
-                clickSound.currentTime = 0;
-                clickSound.play().catch(e => console.log('Click sound failed:', e));
-            }
+            if (!soundEnabled) return;
+            
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.frequency.setValueAtTime(1000, audioContext.currentTime);
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+            
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + 0.1);
         }
         
         // تشغيل صوت الانتقال
         function playSlideSound() {
-            if (soundEnabled) {
-                // محاكاة صوت swoosh
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                const oscillator = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
-                
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-                
-                oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-                oscillator.frequency.exponentialRampToValueAtTime(400, audioContext.currentTime + 0.3);
-                
-                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
-                
-                oscillator.start(audioContext.currentTime);
-                oscillator.stop(audioContext.currentTime + 0.3);
-            }
+            if (!soundEnabled) return;
+            
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(400, audioContext.currentTime + 0.3);
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.3);
         }
         
         // تحديث السلايد
@@ -1024,6 +1680,15 @@
             
             currentSlide = index;
             
+            // تحديث لوحة المعلومات
+            updateDashboard(index);
+            
+            // تحديث الخريطة
+            updateMap(index + 1);
+            
+            // تشغيل صوت العصر
+            playEraSound(index);
+            
             // إعادة تشغيل الأنيميشن للعناصر
             const activeSlide = slides[index];
             const elements = activeSlide.querySelectorAll('.slide-text, .slide-visual, .stat-item');
@@ -1044,7 +1709,7 @@
             if (currentSlide < totalSlides - 1) {
                 updateSlide(currentSlide + 1);
             } else {
-                updateSlide(0); // العودة للبداية
+                updateSlide(0);
             }
         }
         
@@ -1053,7 +1718,7 @@
             if (currentSlide > 0) {
                 updateSlide(currentSlide - 1);
             } else {
-                updateSlide(totalSlides - 1); // الذهاب للنهاية
+                updateSlide(totalSlides - 1);
             }
         }
         
@@ -1104,6 +1769,8 @@
             } else if (e.key === ' ') {
                 e.preventDefault();
                 toggleAutoPlay();
+            } else if (e.key === 'm' || e.key === 'M') {
+                mapToggle.click();
             }
         });
         
@@ -1151,20 +1818,9 @@
             });
         });
         
-        // تأثير parallax للخلفية
-        document.addEventListener('mousemove', (e) => {
-            const x = (e.clientX - window.innerWidth / 2) / window.innerWidth;
-            const y = (e.clientY - window.innerHeight / 2) / window.innerHeight;
-            
-            const bg = document.querySelector('.bg-animation::before');
-            if (bg) {
-                bg.style.transform = `translate(${x * 20}px, ${y * 20}px)`;
-            }
-        });
-        
         // تحميل الصفحة
         window.addEventListener('load', () => {
-            // تأثير دخول للعناصر
+            updateDashboard(0);
             setTimeout(() => {
                 document.querySelectorAll('.slide').forEach((slide, i) => {
                     if (i === 0) {
@@ -1175,46 +1831,6 @@
                 });
             }, 100);
         });
-        
-        // إضافة تأثيرات صوتية مخصصة لكل سلايد
-        function playSlideSpecificSound(slideIndex) {
-            if (!soundEnabled) return;
-            
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            
-            // أصوات مختلفة لكل سلايد
-            switch(slideIndex) {
-                case 0: // البداية - صوت ملحمي
-                    oscillator.frequency.setValueAtTime(200, audioContext.currentTime);
-                    oscillator.frequency.exponentialRampToValueAtTime(400, audioContext.currentTime + 0.5);
-                    break;
-                case 11: // النهاية - صوت احتفالي
-                    oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-                    oscillator.frequency.exponentialRampToValueAtTime(1600, audioContext.currentTime + 0.5);
-                    break;
-                default: // باقي السلايدات
-                    oscillator.frequency.setValueAtTime(400 + (slideIndex * 50), audioContext.currentTime);
-                    oscillator.frequency.exponentialRampToValueAtTime(600 + (slideIndex * 50), audioContext.currentTime + 0.3);
-            }
-            
-            gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
-            
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.5);
-        }
-        
-        // تحديث دالة updateSlide لتeeشغيل الصوت المخصص
-        const originalUpdateSlide = updateSlide;
-        updateSlide = function(index) {
-            originalUpdateSlide(index);
-            playSlideSpecificSound(index);
-        };
     </script>
 </body>
 </html>
