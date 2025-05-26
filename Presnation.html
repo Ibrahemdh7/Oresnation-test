@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رحلة UPS عبر الزمن</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* خلفية متحركة */
+        .bg-animation {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 20% 50%, #8B4513 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, #D2691E 0%, transparent 50%),
+                        radial-gradient(circle at 40% 20%, #8B4513 0%, transparent 50%);
+            animation: bgMove 20s ease-in-out infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes bgMove {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-50px, -50px) rotate(180deg); }
+        }
+
+        /* الحاوي الرئيسي */
+        .presentation-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* السلايدات - تنقل عمودي */
+        .slides-wrapper {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+        }
+
+        .slide {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 50px;
+            opacity: 1;
+        }
+
+        /* عناصر السلايد */
+        .slide-content {
+            max-width: 1200px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 50px;
+        }
+
+        .slide-text {
+            flex: 1;
+            animation: slideInLeft 1s ease-out;
+        }
+
+        .slide-visual {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: slideInRight 1s ease-out;
+        }
+
+        .slide h1 {
+            font-size: 4rem;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .slide h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #FFD700;
+        }
+
+        .slide p {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        /* الأيقونات */
+        .icon-container {
+            font-size: 8rem;
+            color: #FFD700;
+            margin: 20px 0;
+            animation: pulseIcon 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseIcon {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
+        /* الصور */
+        .slide-image {
+            width: 100%;
+            max-width: 500px;
+            height: 350px;
+            background: linear-gradient(45deg, #8B4513, #D2691E);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide-image::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .slide-image i {
+            font-size: 6rem;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .image-caption {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.8);
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        /* أزرار التحكم */
+        .controls {
+            position: fixed;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 100;
+        }
+
+        .control-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid #FFD700;
+            background: rgba(139, 69, 19, 0.8);
+            color: #FFD700;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .control-btn:hover {
+            transform: scale(1.1);
+            background: #FFD700;
+            color: #000;
+            box-shadow: 0 0 30px #FFD700;
+        }
+
+        /* التايم لاين */
+        .timeline {
+            position: fixed;
+            top: 50%;
+            right: 30px;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 100;
+        }
+
+        .timeline-item {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: attr(data-year);
+            position: absolute;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #FFD700;
+            font-size: 0.85rem;
+            opacity: 0;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .timeline-item:hover::before {
+            opacity: 1;
+            right: 35px;
+        }
+
+        .timeline-item.active {
+            background: #FFD700;
+            transform: scale(1.5);
+            box-shadow: 0 0 20px #FFD700;
+        }
+
+        /* شريط التقدم */
+        .progress-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 100;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #8B4513, #FFD700);
+            width: 8.33%;
+            transition: width 0.5s ease;
+        }
+
+        /* رقم السلايد */
+        .slide-number {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            font-size: 1.2rem;
+            color: #FFD700;
+            z-index: 100;
+        }
+
+        /* عناصر خاصة */
+        .highlight-box {
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid #FFD700;
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .stats {
+            display: flex;
+            gap: 40px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+            border-color: #FFD700;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
+        }
+
+        .stat-item i {
+            font-size: 2.5rem;
+            color: #FFD700;
+            margin-bottom: 10px;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            color: #FFD700;
+            font-weight: bold;
+            display: block;
+            margin: 10px 0;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: #ccc;
+        }
+
+        /* تحكم الصوت */
+        .sound-control {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+
+        .sound-control button {
+            background: rgba(255, 215, 0, 0.2);
+            border: 2px solid #FFD700;
+            color: #FFD700;
+            padding: 10px 15px;
+            border-radius: 30px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .sound-control button:hover {
+            background: #FFD700;
+            color: #000;
+        }
+
+        /* تأثيرات الحركة */
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* تأثير الجسيمات */
+        .particle {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background: #FFD700;
+            border-radius: 50%;
+            opacity: 0.5;
+            pointer-events: none;
+            animation: float 10s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% { opacity: 0.5; }
+            90% { opacity: 0.5; }
+            50% {
+                transform: translateY(-100vh) translateX(100px);
+            }
+        }
+
+        /* مؤشر التمرير */
+        .scroll-indicator {
+            position: fixed;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s ease-in-out infinite;
+            z-index: 100;
+            font-size: 2rem;
+            color: #FFD700;
+            opacity: 0.7;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-20px); }
+        }
+
+        /* تصميم الموبايل */
+        @media (max-width: 768px) {
+            .slide-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            .slide h1 { font-size: 2.5rem; }
+            .slide h2 { font-size: 1.8rem; }
+            .slide p { font-size: 1rem; }
+            .slide-image { max-width: 300px; height: 250px; }
+            .icon-container { font-size: 5rem; }
+            .timeline { right: 10px; }
+            .controls { bottom: 20px; }
+            .control-btn { width: 50px; height: 50px; }
+            .stats { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    
+    <!-- شريط التحكم بالصوت -->
+    <div class="sound-control">
+        <button id="soundToggle">
+            <i class="fas fa-volume-up"></i> الصوت
+        </button>
+    </div>
+    
+    <div class="presentation-container">
+        <!-- رقم السلايد -->
+        <div class="slide-number">1 / 12</div>
+        
+        <!-- شريط التقدم -->
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+        
+        <!-- مؤشر التمرير -->
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+        
+        <!-- التايم لاين -->
+        <div class="timeline">
+            <div class="timeline-item active" data-year="البداية"></div>
+            <div class="timeline-item" data-year="1907"></div>
+            <div class="timeline-item" data-year="1913"></div>
+            <div class="timeline-item" data-year="1919"></div>
+            <div class="timeline-item" data-year="1929"></div>
+            <div class="timeline-item" data-year="1953"></div>
+            <div class="timeline-item" data-year="1975"></div>
+            <div class="timeline-item" data-year="1985"></div>
+            <div class="timeline-item" data-year="1988"></div>
+            <div class="timeline-item" data-year="1999"></div>
+            <div class="timeline-item" data-year="2000s"></div>
+            <div class="timeline-item" data-year="اليوم"></div>
+        </div>
+        
+        <!-- حاوي السلايدات -->
+        <div class="slides-wrapper">
+            <!-- السلايد 1 - البداية -->
+            <div class="slide">
+                <div class="slide-content">
+                    <div class="slide-text">
+                        <h1>رحلة UPS عبر الزمن</h1>
+                        <p>من شركة رسائل صغيرة في سياتل إلى أكبر شركة توصيل طرود في العالم</p>
+                        <div class="highlight-box">
+                            <h2><i class="fas fa-history"></i> أكثر من 115 عاماً من الابتكار</h2>
+                            <p>قصة نجاح بدأت بـ 100 دولار وحلم كبير، لتصبح اليوم إمبراطورية لوجستية تربط 220 دولة ومنطقة حول العالم</p>
+                            <p>رحلة من التوصيل بالدراجات إلى أسطول من أكثر من 500 طائرة و120,000 مركبة توصيل</p>
+                        </div>
+                    </div>
+                    <div class="slide-visual">
+                        <div class="slide-image">
+                            <i class="fas fa-truck-fast"></i>
+                            <div class="image-caption">
+                                صورة مطلوبة: مونتاج يظهر تطور UPS من دراجة قديمة إلى شاحنة حديثة وطائرة شحن
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- السلايد 2 - 1907 -->
+            <div class="slide">
+                <div class="slide-content">
+                    <div class="slide-text">
+                        <h2><i class="fas fa-calendar-alt"></i> 1907 - البداية المتواضعة</h2>
+                        <div class="highlight-box">
+                            <p>في قبو تحت صالون في سياتل، بدأ جيمس كيسي (19 عاماً) وكلود رايان شركة American Messenger Company</p>
+                            <p>كانت الخدمة تعتمد على التوصيل سيراً على الأقدام وبالدراجات. العملاء الأوائل كانوا يطلبون توصيل الرسائل والطرود الصغيرة وحتى الطعام من المطاعم المحلية</p>
+                            <p>شعار الشركة كان "أفضل خدمة بأقل الأسعار" - مبدأ ما زال قائماً حتى اليوم</p>
+                            <div class="stats">
+                                <div class="stat-item">
+                                    <i class="fas fa-dollar-sign"></i>
+                                    <div class="stat-number">$100</div>
+                                    <div class="stat-label">رأس المال (مقترض)</div>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-bicycle"></i>
+                                    <div class="stat-number">2</div>
+                                    <div class="stat-label">دراجة هوائية</div>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-phone"></i>
+                                    <div class="stat-number">1</div>
+                                    <div class="stat-label">خط هاتف</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slide-visual">
+                        <div class="slide-image">
+                            <i class="fas fa-building-columns"></i>
+                            <div class="image-caption">
+                                صورة مطلوبة: صورة تاريخية بالأبيض والأسود لجيمس كيسي الشاب مع دراجته الأولى أمام مكتب الشركة في سياتل 1907
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- السلايد 3 - 1913 -->
+            <div class="slide">
+                <div class="slide-content">
+                    <div class="slide-text">
+                        <h2><i class="fas fa-car-side"></i> 1913 - ثورة المحركات</h2>
+                        <div class="highlight-box">
+                            <p>الشركة تشتري أول سيارة توصيل - Model T Ford محولة - مما شكل نقطة تحول في تاريخ الشركة</p>
+                            <p>مع ازدياد الطلب على الخدمات، أصبحت الدراجات غير كافية. السيارة الأولى سمحت بتوصيل طرود أكبر ولمسافات أبعد</p>
+                            <p>بحلول نهاية العام، توسع الأسطول إلى 4 سيارات، وبدأت الشركة في توظيف سائقين محترفين</p>
+                        </div>
+                        <div class="stats">
+                            <div class="stat-item">
+                                <i class="fas fa-truck"></i>
+                                <div class="stat-number">Model T</div>
+                                <div class="stat-label">أول سيارة</div>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-route"></i>
+                                <div class="stat-number">3x</div>
+                                <div class="stat-label">زيادة نطاق التوصيل</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slide-visual">
+                        <div class="slide-image">
+                            <i class="fas fa-truck-pickup"></i>
+                            <div class="image-caption">
+                                صورة مطلوبة: سيارة Model T Ford محولة لشاحنة توصيل مع شعار الشركة القديم، سائق يرتدي الزي الرسمي الأول
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- السلايد 4 - 1919 -->
+            <div class="slide">
+                <div class="slide-content">
+                    <div class="slide-text">
+                        <h2><i class="fas fa-expand-arrows-alt"></i> 1919 - ولادة United Parcel Service</h2>
+                        <div class="highlight-box">
+                            <p>توسعت الشركة إلى أوكلاند، كاليفورنيا - أول توسع خارج سياتل. مع هذا التوسع جاء الاسم الجديد: United Parcel Service</p>
+                            <p>تم اختيار اللون البني المميز "Pullman Brown" للشاحنات - نفس لون عربات القطار الفاخرة في ذلك الوقت</p>
+                            <p>السبب؟ اللون البني يخفي الأوساخ ويعطي انطباعاً بالاحترافية والثقة. هذا اللون أصبح جزءاً من هوية UPS حتى اليوم</p>
+                        </div>
+                        <div class="stats">
+                            <div class="stat-item">
+                                <i class="fas fa-map-marked-alt"></i>
+                                <div class="stat-number">2</div>
+                                <div class="stat-label">ولاية</div>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-palette"></i>
+                                <div class="stat-number">البني</div>
+                                <div class="stat-label">اللون المميز</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slide-visual">
+                        <div class="slide-image" style="background: #8B4513;">
+                            <i class="fas fa-shipping-fast"></i>
+                            <div class="image-caption">
+                                صورة مطلوبة: أول شاحنة UPS باللون البني المميز مع الشعار الجديد، خلفية تظهر مدينة أوكلاند في العشرينات
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- السلايد 5 - 1929 -->
+            <div class="slide">
+                <div class="slide-content">
+                    <div class="slide-text">
+                        <h2><i class="fas fa-plane"></i> 1929 - الريادة في النقل الجوي</h2>
+                        <div class="highlight-box">
+                            <p>UPS تصبح أول شركة توصيل تقدم خدمة النقل الجوي للطرود! بدأت الخدمة بين المدن الكبرى على الساحل الغربي</p>
+                            <p>استخدمت الشركة طائرات خاصة لنقل الطرود بين سياتل وسان فرانسيسكو ولوس أنجلوس - رحلة كانت تستغرق أياماً بالشاحنة أصبحت ساعات قليلة</p>
+                            <p>هذه الخطوة الجريئة وضعت UPS في المقدمة وميزتها عن المنافسين لعقود قادمة</p>
+                        </div>
+                        <div class="stats">
+                            <div class="stat-item">
+                                <i class="fas fa-city"></i>
+                                <div class="stat-number">125</div>
+                                <div class="stat-label">مدينة مخدومة</div>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-clock"></i>
+                                <div class="stat-number">24</div>
+                                <div class="stat-label">ساعة توصيل جوي</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slide-visual">
+                        <div class="slide-image">
+                            <i class="fas fa-plane-up"></i>
+                            <div class="image-caption">
+                                صورة مطلوبة: طائرة ثنائية الأجنحة من عصر الثلاثينات مع شعار UPS، عمال يحملون الطرود إلى الطائرة
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- السلايد 6 - 1953 -->
+            <div class="slide">
+                <div class="slide-content">
+                    <div class="slide-text">
+                        <h2><i class="fas fa-bolt"></i> 1953 - Blue Label Air</h2>
+                        <div class="highlight-box">
+                            <p>إطلاق خدمة "Blue Label Air" - خدمة ثورية للتوصيل الجوي في يومين بأسعار معقولة</p>
+                            <p>لأول مرة، أصبح بإمكان الشركات الصغيرة والأفراد إرسال الطرود جواً دون دفع أسعار باهظة</p>
+                            <p>الخدمة كانت متاحة بين المدن الرئيسية في الولايات المتحدة، وشكلت نموذجاً لخدمات التوصيل السريع الحديثة</p>
+                        </div>
+                        <div class="stats">
+                            <div class="stat-item">
+                                <i class="fas fa-tag"></i>
+                                <div class="stat-number">Blue Label</div>
+                                <div class="stat-label">علامة مميزة</div>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-calendar-day"></i>
+                                <div class="stat-number">2</div>
+                                <div class="stat-label">يوم للتوصيل</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slide-visual">
+                        <div class="slide-image" style="background: linear-gradient(45deg, #1e3c72, #2a5298);">
+                            <i class="fas fa-paper-plane"></i>
+                            <div class="image-caption">
+                                صورة مطلوبة: ملصق Blue Label الأزرق المميز على طرد، موظف UPS يسلم الطرد في مطار
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- السلايد 7 - 1975 -->
+            <div class="slide">
+                <div class="slide-content">
+                    <div class="slide-text">
+                        <h2><i class="fas fa-globe-americas"></i> 1975 - التغطية الشاملة والتوسع الدولي</h2>
+                        <div class="highlight-box">
+                            <p>إنجاز تاريخي! UPS تصبح أول شركة توصيل خاصة تخدم كل عنوان في الولايات المتحدة الـ 48 المتصلة</p>
+                            <p>في نفس العام، بدأت الشركة خدمة "Golden Link" - أول خدمة دولية منتظمة إلى كندا</p>
+                            <p>بعد ذلك بفترة قصيرة، توسعت الخدمة إلى ألمانيا الغربية، مما شكل بداية الوجود الأوروبي لـ UPS</p>
+                        </div>
+                        <div class="stats">
+                            <div class="stat-item">
+                                <i class="fas fa-flag-usa"></i>
+                                <div class="stat-number">48</div>
+                                <div class="stat-label">ولاية أمريكية</div>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-link"></i>
+                                <div class="stat-number">Golden Link</div>
+                                <div class="stat-label">الخدمة الدولية</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slide-visual">
+                        <div class="slide-image">
+                            <i class="fas fa-globe"></i>
+                            <div class="image-caption">
+                                صورة مطلوبة: خريطة الولايات المتحدة مع نقاط UPS، شاحنات عند الحدود الكندية والألمانية
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- السلايد 8 - 1985 -->
+            <div class="slide">
+                <div class="slide-content">
+                    <div class="slide-text">
+                        <h2><i class="fas fa-tachometer-alt"></i> 1985 - Next Day Air</h2>
+                        <div class="highlight-box">
+                            <p>إطلاق خدمة Next Day Air - التوصيل في اليوم التالي مضمون 100% أو استرداد الأموال!</p>
+                            <p>هذه الخدمة غيرت قواعد اللعبة في صناعة الشحن. أصبح بإمكان الشركات الاعتماد على توصيل مضمون للمستندات والطرود الحساسة</p>
+                            <p>الخدمة شملت التتبع الكامل وإثبات التسليم - تقنيات كانت متقدمة جداً في ذلك الوقت</p>
+                        </div>
+                        <div class="stats">
+                            <div class="stat-item">
+                                <i class="fas fa-rocket"></i>
+                                <div class="stat-number">24</div>
+                                <div class="stat-label">ساعة أو أقل</div>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-shield-alt"></i>
+                                <div class="stat-number">100%</div>
+                                <div class="stat-label">ضمان التوصيل</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slide-visual">
+                        <div class="slide-image" style="background: linear-gradient(45deg, #ff6b6b, #feca57);">
+                            <i class="fas fa-rocket"></i>
+                            <div class="image-caption">
+                                صورة مطلوبة: طائرة UPS حديثة (من الثمانينات) مع شعار Next Day Air، موظف يسلم طرد عاجل
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- السلايد 9 - 1988 -->
+            <div class="slide">
+                <div class="slide-content">
+                    <div class="slide-text">
+                        <h2><i class="fas fa-plane-circle-check"></i> 1988 - UPS Airlines</h2>
+                        <div class="highlight-box">
+                            <p>ولادة UPS Airlines! الشركة تحصل على رخصة طيران خاصة وتصبح شركة طيران مستقلة</p>
+                            <p>البداية كانت بـ 14 طائرة Boeing 727، لكن الأسطول نما بسرعة ليصبح أحد أكبر أساطيل الشحن الجوي في العالم</p>
+                            <p>مطار Louisville في كنتاكي أصبح المحور الرئيسي "Worldport" - أحد أكثر مراكز الشحن تطوراً في العالم</p>
+                        </div>
+                        <div class="stats">
+                            <div class="stat-item">
+                                <i class="fas fa-plane"></i>
+                                <div class="stat-number">14</div>
+                                <div class="stat-label">طائرة في البداية</div>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-globe"></i>
+                                <div class="stat-number">Worldport</div>
+                                <div class="stat-label">المحور العالمي</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slide-visual">
+                        <div class="slide-image">
+                            <i class="fas fa-plane-circle-exclamation"></i>
+                            <div class="image-caption">
+                                صورة مطلوبة: طائرة Boeing 727 بألوان UPS البنية المميزة، منظر جوي لمطار Louisville Worldport
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- السلايد 10 - 1999 -->
+            <div class="slide">
+                <div class="slide-content">
+                    <div class="slide-text">
+                        <h2><i class="fas fa-chart-line"></i> 1999 - الاكتتاب العام التاريخي</h2>
+                        <div class="highlight-box">
+                            <p>بعد 92 عاماً كشركة خاصة، UPS تدخل البورصة في أكبر اكتتاب عام في التاريخ الأمريكي حتى ذلك الوقت</p>
+                            <p>جمعت الشركة 5.47 مليار دولار في يوم واحد! سعر السهم افتتح عند 50 دولار وأغلق عند 68 دولار</p>
+                            <p>هذه الخطوة مكنت UPS من التوسع السريع وشراء شركات جديدة ودخول أسواق جديدة حول العالم</p>
+                        </div>
+                        <div class="stats">
+                            <div class="stat-item">
+                                <i class="fas fa-dollar-sign"></i>
+                                <div class="stat-number">$5.47B</div>
+                                <div class="stat-label">قيمة الاكتتاب</div>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-percentage"></i>
+                                <div class="stat-number">36%</div>
+                                <div class="stat-label">ارتفاع أول يوم</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slide-visual">
+                        <div class="slide-image" style="background: linear-gradient(45deg, #00d2ff, #3a7bd5);">
+                            <i class="fas fa-chart-line"></i>
+                            <div class="image-caption">
+                                صورة مطلوبة: جرس بورصة نيويورك مع مسؤولي UPS، شاشات تداول تظهر رمز UPS
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- السلايد 11 - 2000s -->
+            <div class="slide">
+                <div class="slide-content">
+                    <div class="slide-text">
+                        <h2><i class="fas fa-microchip"></i> العصر الرقمي والابتكار</h2>
+                        <div class="highlight-box">
+                            <p>UPS تحتضن التكنولوجيا: تطبيقات الهواتف الذكية، التتبع اللحظي، والتوقيع الإلكتروني</p>
+                            <p>نظام ORION الثوري يستخدم الذكاء الاصطناعي لتحسين مسارات التوصيل - يوفر 100 مليون ميل سنوياً!</p>
+                            <p>دخول عالم التجارة الإلكترونية بقوة مع خدمات مخصصة للمتاجر الإلكترونية وحلول الإرجاع السهلة</p>
+                            <p>بدء تجارب التوصيل بالطائرات بدون طيار والمركبات الكهربائية للمستقبل المستدام</p>
+                        </div>
+                        <div class="stats">
+                            <div class="stat-item">
+                                <i class="fas fa-mobile-alt"></i>
+                                <div class="stat-number">My Choice</div>
+                                <div class="stat-label">التحكم بالتوصيل</div>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-brain"></i>
+                                <div class="stat-number">ORION</div>
+                                <div class="stat-label">ذكاء اصطناعي</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slide-visual">
+                        <div class="slide-image" style="background: linear-gradient(45deg, #667eea, #764ba2);">
+                            <i class="fas fa-laptop-code"></i>
+                            <div class="image-caption">
+                                صورة مطلوبة: سائق UPS يستخدم جهاز DIAD الإلكتروني، شاشة هاتف تظهر تطبيق UPS، طائرة درون UPS
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- السلايد 12 - اليوم -->
+            <div class="slide">
+                <div class="slide-content">
+                    <div class="slide-text">
+                        <h2><i class="fas fa-trophy"></i> UPS اليوم - قائد عالمي</h2>
+                        <div class="highlight-box">
+                            <p>من 100 دولار إلى أكثر من 100 مليار دولار إيرادات سنوية!</p>
+                            <p>UPS اليوم هي أكثر من مجرد شركة شحن - هي شريك لوجستي متكامل يقدم حلولاً للأعمال حول العالم</p>
+                            <p>مع التزام قوي بالاستدامة: هدف الوصول إلى صفر انبعاثات بحلول 2050</p>
+                        </div>
+                        <div class="stats">
+                            <div class="stat-item">
+                                <i class="fas fa-users"></i>
+                                <div class="stat-number">540K+</div>
+                                <div class="stat-label">موظف عالمياً</div>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-box"></i>
+                                <div class="stat-number">28M</div>
+                                <div class="stat-label">طرد يومياً</div>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-plane"></i>
+                                <div class="stat-number">500+</div>
+                                <div class="stat-label">طائرة</div>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-earth-americas"></i>
+                                <div class="stat-number">220</div>
+                                <div class="stat-label">دولة ومنطقة</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slide-visual">
+                        <div class="icon-container">
+                            <i class="fas fa-award"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- أزرار التحكم -->
+    <div class="controls">
+        <button class="control-btn" id="prevBtn"><i class="fas fa-chevron-up"></i></button>
+        <button class="control-btn" id="playBtn"><i class="fas fa-pause"></i></button>
+        <button class="control-btn" id="nextBtn"><i class="fas fa-chevron-down"></i></button>
+    </div>
+    
+    <!-- المؤثرات الصوتية -->
+    <audio id="bgMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="slideSound" src="data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQQAAAAAA"></audio>
+    <audio id="clickSound" src="data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQQAAAAAA"></audio>
+    
+    <!-- الجسيمات المتحركة -->
+    <script>
+        // إنشاء الجسيمات
+        for (let i = 0; i < 20; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 10 + 's';
+            particle.style.animationDuration = (10 + Math.random() * 10) + 's';
+            document.body.appendChild(particle);
+        }
+    </script>
+    
+    <script>
+        // المتغيرات
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const slidesWrapper = document.querySelector('.slides-wrapper');
+        const timelineItems = document.querySelectorAll('.timeline-item');
+        const progressFill = document.querySelector('.progress-fill');
+        const slideNumber = document.querySelector('.slide-number');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const playBtn = document.getElementById('playBtn');
+        const scrollIndicator = document.querySelector('.scroll-indicator');
+        const soundToggle = document.getElementById('soundToggle');
+        const bgMusic = document.getElementById('bgMusic');
+        const slideSound = document.getElementById('slideSound');
+        const clickSound = document.getElementById('clickSound');
+        
+        let isPlaying = false;
+        let autoPlayInterval;
+        let isTransitioning = false;
+        let soundEnabled = false;
+        
+        // تحكم الصوت
+        soundToggle.addEventListener('click', () => {
+            soundEnabled = !soundEnabled;
+            if (soundEnabled) {
+                bgMusic.volume = 0.3;
+                bgMusic.play().catch(e => console.log('Audio play failed:', e));
+                soundToggle.innerHTML = '<i class="fas fa-volume-up"></i> الصوت';
+            } else {
+                bgMusic.pause();
+                soundToggle.innerHTML = '<i class="fas fa-volume-mute"></i> الصوت';
+            }
+            playClickSound();
+        });
+        
+        // تشغيل صوت النقر
+        function playClickSound() {
+            if (soundEnabled) {
+                clickSound.currentTime = 0;
+                clickSound.play().catch(e => console.log('Click sound failed:', e));
+            }
+        }
+        
+        // تشغيل صوت الانتقال
+        function playSlideSound() {
+            if (soundEnabled) {
+                // محاكاة صوت swoosh
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(400, audioContext.currentTime + 0.3);
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.3);
+            }
+        }
+        
+        // تحديث السلايد
+        function updateSlide(index) {
+            if (isTransitioning) return;
+            isTransitioning = true;
+            
+            // تشغيل صوت الانتقال
+            playSlideSound();
+            
+            // تحديث موضع السلايدات (التمرير العمودي)
+            slidesWrapper.style.transform = `translateY(-${index * 100}vh)`;
+            
+            // تحديث التايم لاين
+            timelineItems.forEach((item, i) => {
+                item.classList.toggle('active', i === index);
+            });
+            
+            // تحديث شريط التقدم
+            progressFill.style.width = ((index + 1) / totalSlides * 100) + '%';
+            
+            // تحديث رقم السلايد
+            slideNumber.textContent = `${index + 1} / ${totalSlides}`;
+            
+            // إخفاء مؤشر التمرير في السلايد الأخير
+            if (index === totalSlides - 1) {
+                scrollIndicator.style.opacity = '0';
+            } else {
+                scrollIndicator.style.opacity = '0.7';
+            }
+            
+            currentSlide = index;
+            
+            // إعادة تشغيل الأنيميشن للعناصر
+            const activeSlide = slides[index];
+            const elements = activeSlide.querySelectorAll('.slide-text, .slide-visual, .stat-item');
+            elements.forEach((el, i) => {
+                el.style.animation = 'none';
+                setTimeout(() => {
+                    el.style.animation = '';
+                }, 10);
+            });
+            
+            setTimeout(() => {
+                isTransitioning = false;
+            }, 1200);
+        }
+        
+        // الانتقال للسلايد التالي
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                updateSlide(currentSlide + 1);
+            } else {
+                updateSlide(0); // العودة للبداية
+            }
+        }
+        
+        // الانتقال للسلايد السابق
+        function prevSlide() {
+            if (currentSlide > 0) {
+                updateSlide(currentSlide - 1);
+            } else {
+                updateSlide(totalSlides - 1); // الذهاب للنهاية
+            }
+        }
+        
+        // التشغيل التلقائي
+        function toggleAutoPlay() {
+            isPlaying = !isPlaying;
+            playBtn.innerHTML = isPlaying ? '<i class="fas fa-pause"></i>' : '<i class="fas fa-play"></i>';
+            playClickSound();
+            
+            if (isPlaying) {
+                autoPlayInterval = setInterval(nextSlide, 5000);
+            } else {
+                clearInterval(autoPlayInterval);
+            }
+        }
+        
+        // أحداث الأزرار
+        nextBtn.addEventListener('click', () => {
+            playClickSound();
+            nextSlide();
+        });
+        
+        prevBtn.addEventListener('click', () => {
+            playClickSound();
+            prevSlide();
+        });
+        
+        playBtn.addEventListener('click', toggleAutoPlay);
+        
+        // النقر على التايم لاين
+        timelineItems.forEach((item, index) => {
+            item.addEventListener('click', () => {
+                playClickSound();
+                updateSlide(index);
+                if (isPlaying) {
+                    clearInterval(autoPlayInterval);
+                    autoPlayInterval = setInterval(nextSlide, 5000);
+                }
+            });
+        });
+        
+        // التحكم بلوحة المفاتيح
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+                nextSlide();
+            } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                prevSlide();
+            } else if (e.key === ' ') {
+                e.preventDefault();
+                toggleAutoPlay();
+            }
+        });
+        
+        // التحكم بعجلة الماوس
+        let scrollTimeout;
+        document.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                if (e.deltaY > 0) {
+                    nextSlide();
+                } else {
+                    prevSlide();
+                }
+            }, 50);
+        });
+        
+        // التحكم باللمس للموبايل
+        let touchStartY = 0;
+        let touchEndY = 0;
+        
+        document.addEventListener('touchstart', (e) => {
+            touchStartY = e.changedTouches[0].screenY;
+        });
+        
+        document.addEventListener('touchend', (e) => {
+            touchEndY = e.changedTouches[0].screenY;
+            handleSwipe();
+        });
+        
+        function handleSwipe() {
+            if (touchEndY < touchStartY - 50) nextSlide();
+            if (touchEndY > touchStartY + 50) prevSlide();
+        }
+        
+        // تأثير حركة الماوس
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            document.querySelectorAll('.particle').forEach((particle, i) => {
+                const speed = (i + 1) * 0.5;
+                particle.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+            });
+        });
+        
+        // تأثير parallax للخلفية
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX - window.innerWidth / 2) / window.innerWidth;
+            const y = (e.clientY - window.innerHeight / 2) / window.innerHeight;
+            
+            const bg = document.querySelector('.bg-animation::before');
+            if (bg) {
+                bg.style.transform = `translate(${x * 20}px, ${y * 20}px)`;
+            }
+        });
+        
+        // تحميل الصفحة
+        window.addEventListener('load', () => {
+            // تأثير دخول للعناصر
+            setTimeout(() => {
+                document.querySelectorAll('.slide').forEach((slide, i) => {
+                    if (i === 0) {
+                        slide.querySelectorAll('.slide-text, .slide-visual').forEach((el, j) => {
+                            el.style.animationDelay = `${j * 0.2}s`;
+                        });
+                    }
+                });
+            }, 100);
+        });
+        
+        // إضافة تأثيرات صوتية مخصصة لكل سلايد
+        function playSlideSpecificSound(slideIndex) {
+            if (!soundEnabled) return;
+            
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            // أصوات مختلفة لكل سلايد
+            switch(slideIndex) {
+                case 0: // البداية - صوت ملحمي
+                    oscillator.frequency.setValueAtTime(200, audioContext.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(400, audioContext.currentTime + 0.5);
+                    break;
+                case 11: // النهاية - صوت احتفالي
+                    oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(1600, audioContext.currentTime + 0.5);
+                    break;
+                default: // باقي السلايدات
+                    oscillator.frequency.setValueAtTime(400 + (slideIndex * 50), audioContext.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(600 + (slideIndex * 50), audioContext.currentTime + 0.3);
+            }
+            
+            gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.5);
+        }
+        
+        // تحديث دالة updateSlide لتشغيل الصوت المخصص
+        const originalUpdateSlide = updateSlide;
+        updateSlide = function(index) {
+            originalUpdateSlide(index);
+            playSlideSpecificSound(index);
+        };
+    </script>
+</body>
+</html>
