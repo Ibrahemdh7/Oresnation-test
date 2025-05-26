@@ -298,9 +298,9 @@
 
         /* لوحة المعلومات الحية */
         .live-dashboard {
-            position: fixed;
+            position: absolute;
             bottom: 150px;
-            right: 30px;
+            right: 0px;
             width: 300px;
             background: rgba(0, 0, 0, 0.8);
             border: 2px solid #FFD700;
@@ -391,7 +391,7 @@
         .timeline {
             position: fixed;
             top: 50%;
-            right: 350px;
+            right: 1700px;
             transform: translateY(-50%);
             display: flex;
             flex-direction: column;
@@ -633,42 +633,42 @@
 <body>
     <div class="bg-animation"></div>
     
-    <!-- شريط التحكم بالصوت -->
+    <!-- Sound Control Bar -->
     <div class="sound-control">
         <button id="soundToggle">
-            <i class="fas fa-volume-up"></i> الصوت
+            <i class="fas fa-volume-up"></i> Sound
         </button>
     </div>
     
-    <!-- زر خريطة العالم -->
+    <!-- World Map Button -->
     <button class="map-toggle-btn" id="mapToggle">
-        <i class="fas fa-globe"></i> خريطة الانتشار
+        <i class="fas fa-globe"></i> Coverage Map
     </button>
     
-    <!-- خريطة العالم التفاعلية -->
+    <!-- Interactive World Map -->
     <div class="world-map-container" id="worldMapContainer">
         <div class="world-map" id="worldMap"></div>
     </div>
     
-    <!-- لوحة المعلومات الحية -->
+    <!-- Live Dashboard -->
     <div class="live-dashboard">
         <div class="dashboard-title">
-            <i class="fas fa-chart-line"></i> إحصائيات حية
+            <i class="fas fa-chart-line"></i> Live Statistics
         </div>
         <div class="dashboard-item">
-            <div class="dashboard-label">السنة الحالية</div>
+            <div class="dashboard-label">Current Year</div>
             <div class="dashboard-value" id="currentYear">1907</div>
         </div>
         <div class="dashboard-item">
-            <div class="dashboard-label">عدد الموظفين</div>
+            <div class="dashboard-label">Number of Employees</div>
             <div class="dashboard-value" id="employeeCount">2</div>
         </div>
         <div class="dashboard-item">
-            <div class="dashboard-label">المدن المخدومة</div>
+            <div class="dashboard-label">Cities Served</div>
             <div class="dashboard-value" id="citiesCount">1</div>
         </div>
         <div class="dashboard-item">
-            <div class="dashboard-label">وسيلة النقل</div>
+            <div class="dashboard-label">Transportation Mode</div>
             <div class="dashboard-value" id="transportMode">
                 <i class="fas fa-walking"></i>
             </div>
@@ -676,22 +676,22 @@
     </div>
     
     <div class="presentation-container">
-        <!-- رقم السلايد -->
+        <!-- Slide Number -->
         <div class="slide-number">1 / 12</div>
         
-        <!-- شريط التقدم -->
+        <!-- Progress Bar -->
         <div class="progress-bar">
             <div class="progress-fill"></div>
         </div>
         
-        <!-- مؤشر التمرير -->
+        <!-- Scroll Indicator -->
         <div class="scroll-indicator">
             <i class="fas fa-chevron-down"></i>
         </div>
         
-        <!-- التايم لاين -->
+        <!-- Timeline -->
         <div class="timeline">
-            <div class="timeline-item active" data-year="البداية"></div>
+            <div class="timeline-item active" data-year="Beginning"></div>
             <div class="timeline-item" data-year="1907"></div>
             <div class="timeline-item" data-year="1913"></div>
             <div class="timeline-item" data-year="1919"></div>
@@ -702,58 +702,57 @@
             <div class="timeline-item" data-year="1988"></div>
             <div class="timeline-item" data-year="1999"></div>
             <div class="timeline-item" data-year="2000s"></div>
-            <div class="timeline-item" data-year="اليوم"></div>
+            <div class="timeline-item" data-year="Today"></div>
         </div>
         
-        <!-- حاوي السلايدات -->
+        <!-- Slides Container -->
         <div class="slides-wrapper">
-            <!-- السلايد 1 - البداية -->
+            <!-- Slide 1 - Beginning -->
             <div class="slide">
                 <div class="slide-content">
                     <div class="slide-text">
-                        <h1>رحلة UPS عبر الزمن</h1>
-                        <p>من شركة رسائل صغيرة في سياتل إلى أكبر شركة توصيل طرود في العالم</p>
+                        <h1>UPS Journey Through Time</h1>
+                        <p>From a small messenger company in Seattle to the world's largest package delivery company</p>
                         <div class="highlight-box">
-                            <h2><i class="fas fa-history"></i> أكثر من 115 عاماً من الابتكار</h2>
-                            <p>قصة نجاح بدأت بـ 100 دولار وحلم كبير، لتصبح اليوم إمبراطورية لوجستية تربط 220 دولة ومنطقة حول العالم</p>
-                            <p>رحلة من التوصيل بالدراجات إلى أسطول من أكثر من 500 طائرة و120,000 مركبة توصيل</p>
+                            <h2><i class="fas fa-history"></i> Over 115 Years of Innovation</h2>
+                            <p>A success story that began with $100 and a big dream, to become today a logistics empire connecting 220 countries and territories around the world</p>
+                            <p>A journey from bicycle deliveries to a fleet of over 500 aircraft and 120,000 delivery vehicles</p>
                         </div>
                     </div>
                     <div class="slide-visual">
                         <div class="slide-image">
                             <i class="fas fa-truck-fast"></i>
                             <div class="image-caption">
-                                صورة مطلوبة: مونتاج يظهر تطور UPS من دراجة قديمة إلى شاحنة حديثة وطائرة شحن
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <!-- السلايد 2 - 1907 -->
+            <!-- Slide 2 - 1907 -->
             <div class="slide">
                 <div class="slide-content">
                     <div class="slide-text">
-                        <h2><i class="fas fa-calendar-alt"></i> 1907 - البداية المتواضعة</h2>
+                        <h2><i class="fas fa-calendar-alt"></i> 1907 - Humble Beginnings</h2>
                         <div class="highlight-box">
-                            <p>في قبو تحت صالون في سياتل، بدأ جيمس كيسي (19 عاماً) وكلود رايان شركة American Messenger Company</p>
-                            <p>كانت الخدمة تعتمد على التوصيل سيراً على الأقدام وبالدراجات. العملاء الأوائل كانوا يطلبون توصيل الرسائل والطرود الصغيرة وحتى الطعام من المطاعم المحلية</p>
-                            <p>شعار الشركة كان "أفضل خدمة بأقل الأسعار" - مبدأ ما زال قائماً حتى اليوم</p>
+                            <p>In a basement below a saloon in Seattle, James Casey (19 years old) and Claude Ryan started the American Messenger Company</p>
+                            <p>The service relied on foot and bicycle deliveries. Early customers would request delivery of messages, small packages, and even food from local restaurants</p>
+                            <p>The company motto was "Best Service and Lowest Rates" - a principle that still stands today</p>
                             <div class="stats">
                                 <div class="stat-item">
                                     <i class="fas fa-dollar-sign"></i>
                                     <div class="stat-number">$100</div>
-                                    <div class="stat-label">رأس المال (مقترض)</div>
+                                    <div class="stat-label">Capital (borrowed)</div>
                                 </div>
                                 <div class="stat-item">
                                     <i class="fas fa-bicycle"></i>
                                     <div class="stat-number">2</div>
-                                    <div class="stat-label">دراجة هوائية</div>
+                                    <div class="stat-label">Bicycles</div>
                                 </div>
                                 <div class="stat-item">
                                     <i class="fas fa-phone"></i>
                                     <div class="stat-number">1</div>
-                                    <div class="stat-label">خط هاتف</div>
+                                    <div class="stat-label">Phone line</div>
                                 </div>
                             </div>
                         </div>
@@ -762,33 +761,32 @@
                         <div class="slide-image">
                             <i class="fas fa-building-columns"></i>
                             <div class="image-caption">
-                                صورة مطلوبة: صورة تاريخية بالأبيض والأسود لجيمس كيسي الشاب مع دراجته الأولى أمام مكتب الشركة في سياتل 1907
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <!-- السلايد 3 - 1913 -->
+            <!-- Slide 3 - 1913 -->
             <div class="slide">
                 <div class="slide-content">
                     <div class="slide-text">
-                        <h2><i class="fas fa-car-side"></i> 1913 - ثورة المحركات</h2>
+                        <h2><i class="fas fa-car-side"></i> 1913 - The Motor Revolution</h2>
                         <div class="highlight-box">
-                            <p>الشركة تشتري أول سيارة توصيل - Model T Ford محولة - مما شكل نقطة تحول في تاريخ الشركة</p>
-                            <p>مع ازدياد الطلب على الخدمات، أصبحت الدراجات غير كافية. السيارة الأولى سمحت بتوصيل طرود أكبر ولمسافات أبعد</p>
-                            <p>بحلول نهاية العام، توسع الأسطول إلى 4 سيارات، وبدأت الشركة في توظيف سائقين محترفين</p>
+                            <p>The company purchases its first delivery vehicle - a converted Model T Ford - marking a turning point in the company's history</p>
+                            <p>With increasing demand for services, bicycles became insufficient. The first car allowed delivery of larger packages and longer distances</p>
+                            <p>By the end of the year, the fleet expanded to 4 cars, and the company began hiring professional drivers</p>
                         </div>
                         <div class="stats">
                             <div class="stat-item">
                                 <i class="fas fa-truck"></i>
                                 <div class="stat-number">Model T</div>
-                                <div class="stat-label">أول سيارة</div>
+                                <div class="stat-label">First Car</div>
                             </div>
                             <div class="stat-item">
                                 <i class="fas fa-route"></i>
                                 <div class="stat-number">3x</div>
-                                <div class="stat-label">زيادة نطاق التوصيل</div>
+                                <div class="stat-label">Delivery Range Increase</div>
                             </div>
                         </div>
                     </div>
@@ -796,33 +794,32 @@
                         <div class="slide-image">
                             <i class="fas fa-truck-pickup"></i>
                             <div class="image-caption">
-                                صورة مطلوبة: سيارة Model T Ford محولة لشاحنة توصيل مع شعار الشركة القديم، سائق يرتدي الزي الرسمي الأول
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <!-- السلايد 4 - 1919 -->
+            <!-- Slide 4 - 1919 -->
             <div class="slide">
                 <div class="slide-content">
                     <div class="slide-text">
-                        <h2><i class="fas fa-expand-arrows-alt"></i> 1919 - ولادة United Parcel Service</h2>
+                        <h2><i class="fas fa-expand-arrows-alt"></i> 1919 - Birth of United Parcel Service</h2>
                         <div class="highlight-box">
-                            <p>توسعت الشركة إلى أوكلاند، كاليفورنيا - أول توسع خارج سياتل. مع هذا التوسع جاء الاسم الجديد: United Parcel Service</p>
-                            <p>تم اختيار اللون البني المميز "Pullman Brown" للشاحنات - نفس لون عربات القطار الفاخرة في ذلك الوقت</p>
-                            <p>السبب؟ اللون البني يخفي الأوساخ ويعطي انطباعاً بالاحترافية والثقة. هذا اللون أصبح جزءاً من هوية UPS حتى اليوم</p>
+                            <p>The company expanded to Oakland, California - the first expansion outside Seattle. With this expansion came the new name: United Parcel Service</p>
+                            <p>The distinctive brown color "Pullman Brown" was chosen for trucks - the same color as luxury train cars of that time</p>
+                            <p>The reason? Brown hides dirt and gives an impression of professionalism and trust. This color became part of UPS identity to this day</p>
                         </div>
                         <div class="stats">
                             <div class="stat-item">
                                 <i class="fas fa-map-marked-alt"></i>
                                 <div class="stat-number">2</div>
-                                <div class="stat-label">ولاية</div>
+                                <div class="stat-label">States</div>
                             </div>
                             <div class="stat-item">
                                 <i class="fas fa-palette"></i>
-                                <div class="stat-number">البني</div>
-                                <div class="stat-label">اللون المميز</div>
+                                <div class="stat-number">Brown</div>
+                                <div class="stat-label">Signature Color</div>
                             </div>
                         </div>
                     </div>
@@ -830,33 +827,32 @@
                         <div class="slide-image" style="background: #8B4513;">
                             <i class="fas fa-shipping-fast"></i>
                             <div class="image-caption">
-                                صورة مطلوبة: أول شاحنة UPS باللون البني المميز مع الشعار الجديد، خلفية تظهر مدينة أوكلاند في العشرينات
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <!-- السلايد 5 - 1929 -->
+            <!-- Slide 5 - 1929 -->
             <div class="slide">
                 <div class="slide-content">
                     <div class="slide-text">
-                        <h2><i class="fas fa-plane"></i> 1929 - الريادة في النقل الجوي</h2>
+                        <h2><i class="fas fa-plane"></i> 1929 - Pioneering Air Transportation</h2>
                         <div class="highlight-box">
-                            <p>UPS تصبح أول شركة توصيل تقدم خدمة النقل الجوي للطرود! بدأت الخدمة بين المدن الكبرى على الساحل الغربي</p>
-                            <p>استخدمت الشركة طائرات خاصة لنقل الطرود بين سياتل وسان فرانسيسكو ولوس أنجلوس - رحلة كانت تستغرق أياماً بالشاحنة أصبحت ساعات قليلة</p>
-                            <p>هذه الخطوة الجريئة وضعت UPS في المقدمة وميزتها عن المنافسين لعقود قادمة</p>
+                            <p>UPS becomes the first delivery company to offer air transportation for packages! The service began between major cities on the West Coast</p>
+                            <p>The company used private aircraft to transport packages between Seattle, San Francisco, and Los Angeles - a journey that took days by truck became just a few hours</p>
+                            <p>This bold move put UPS at the forefront and distinguished it from competitors for decades to come</p>
                         </div>
                         <div class="stats">
                             <div class="stat-item">
                                 <i class="fas fa-city"></i>
                                 <div class="stat-number">125</div>
-                                <div class="stat-label">مدينة مخدومة</div>
+                                <div class="stat-label">Cities Served</div>
                             </div>
                             <div class="stat-item">
                                 <i class="fas fa-clock"></i>
                                 <div class="stat-number">24</div>
-                                <div class="stat-label">ساعة توصيل جوي</div>
+                                <div class="stat-label">Hour Air Delivery</div>
                             </div>
                         </div>
                     </div>
@@ -864,33 +860,32 @@
                         <div class="slide-image">
                             <i class="fas fa-plane-up"></i>
                             <div class="image-caption">
-                                صورة مطلوبة: طائرة ثنائية الأجنحة من عصر الثلاثينات مع شعار UPS، عمال يحملون الطرود إلى الطائرة
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <!-- السلايد 6 - 1953 -->
+            <!-- Slide 6 - 1953 -->
             <div class="slide">
                 <div class="slide-content">
                     <div class="slide-text">
                         <h2><i class="fas fa-bolt"></i> 1953 - Blue Label Air</h2>
                         <div class="highlight-box">
-                            <p>إطلاق خدمة "Blue Label Air" - خدمة ثورية للتوصيل الجوي في يومين بأسعار معقولة</p>
-                            <p>لأول مرة، أصبح بإمكان الشركات الصغيرة والأفراد إرسال الطرود جواً دون دفع أسعار باهظة</p>
-                            <p>الخدمة كانت متاحة بين المدن الرئيسية في الولايات المتحدة، وشكلت نموذجاً لخدمات التوصيل السريع الحديثة</p>
+                            <p>Launch of "Blue Label Air" service - a revolutionary two-day air delivery service at reasonable prices</p>
+                            <p>For the first time, small businesses and individuals could send packages by air without paying exorbitant prices</p>
+                            <p>The service was available between major cities in the United States, forming a model for modern express delivery services</p>
                         </div>
                         <div class="stats">
                             <div class="stat-item">
                                 <i class="fas fa-tag"></i>
                                 <div class="stat-number">Blue Label</div>
-                                <div class="stat-label">علامة مميزة</div>
+                                <div class="stat-label">Signature Brand</div>
                             </div>
                             <div class="stat-item">
                                 <i class="fas fa-calendar-day"></i>
                                 <div class="stat-number">2</div>
-                                <div class="stat-label">يوم للتوصيل</div>
+                                <div class="stat-label">Days Delivery</div>
                             </div>
                         </div>
                     </div>
@@ -898,33 +893,32 @@
                         <div class="slide-image" style="background: linear-gradient(45deg, #1e3c72, #2a5298);">
                             <i class="fas fa-paper-plane"></i>
                             <div class="image-caption">
-                                صورة مطلوبة: ملصق Blue Label الأزرق المميز على طرد، موظف UPS يسلم الطرد في مطار
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <!-- السلايد 7 - 1975 -->
+            <!-- Slide 7 - 1975 -->
             <div class="slide">
                 <div class="slide-content">
                     <div class="slide-text">
-                        <h2><i class="fas fa-globe-americas"></i> 1975 - التغطية الشاملة والتوسع الدولي</h2>
+                        <h2><i class="fas fa-globe-americas"></i> 1975 - Complete Coverage and International Expansion</h2>
                         <div class="highlight-box">
-                            <p>إنجاز تاريخي! UPS تصبح أول شركة توصيل خاصة تخدم كل عنوان في الولايات المتحدة الـ 48 المتصلة</p>
-                            <p>في نفس العام، بدأت الشركة خدمة "Golden Link" - أول خدمة دولية منتظمة إلى كندا</p>
-                            <p>بعد ذلك بفترة قصيرة، توسعت الخدمة إلى ألمانيا الغربية، مما شكل بداية الوجود الأوروبي لـ UPS</p>
+                            <p>Historic achievement! UPS becomes the first private delivery company to serve every address in the 48 contiguous United States</p>
+                            <p>In the same year, the company started "Golden Link" service - the first regular international service to Canada</p>
+                            <p>Shortly after, service expanded to West Germany, marking the beginning of UPS's European presence</p>
                         </div>
                         <div class="stats">
                             <div class="stat-item">
                                 <i class="fas fa-flag-usa"></i>
                                 <div class="stat-number">48</div>
-                                <div class="stat-label">ولاية أمريكية</div>
+                                <div class="stat-label">US States</div>
                             </div>
                             <div class="stat-item">
                                 <i class="fas fa-link"></i>
                                 <div class="stat-number">Golden Link</div>
-                                <div class="stat-label">الخدمة الدولية</div>
+                                <div class="stat-label">International Service</div>
                             </div>
                         </div>
                     </div>
@@ -932,33 +926,32 @@
                         <div class="slide-image">
                             <i class="fas fa-globe"></i>
                             <div class="image-caption">
-                                صورة مطلوبة: خريطة الولايات المتحدة مع نقاط UPS، شاحنات عند الحدود الكندية والألمانية
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <!-- السلايد 8 - 1985 -->
+            <!-- Slide 8 - 1985 -->
             <div class="slide">
                 <div class="slide-content">
                     <div class="slide-text">
                         <h2><i class="fas fa-tachometer-alt"></i> 1985 - Next Day Air</h2>
                         <div class="highlight-box">
-                            <p>إطلاق خدمة Next Day Air - التوصيل في اليوم التالي مضمون 100% أو استرداد الأموال!</p>
-                            <p>هذه الخدمة غيرت قواعد اللعبة في صناعة الشحن. أصبح بإمكان الشركات الاعتماد على توصيل مضمون للمستندات والطرود الحساسة</p>
-                            <p>الخدمة شملت التتبع الكامل وإثبات التسليم - تقنيات كانت متقدمة جداً في ذلك الوقت</p>
+                            <p>Launch of Next Day Air service - next-day delivery 100% guaranteed or money back!</p>
+                            <p>This service changed the rules of the game in the shipping industry. Companies could now rely on guaranteed delivery for sensitive documents and packages</p>
+                            <p>The service included full tracking and proof of delivery - technologies that were very advanced at that time</p>
                         </div>
                         <div class="stats">
                             <div class="stat-item">
                                 <i class="fas fa-rocket"></i>
                                 <div class="stat-number">24</div>
-                                <div class="stat-label">ساعة أو أقل</div>
+                                <div class="stat-label">Hours or Less</div>
                             </div>
                             <div class="stat-item">
                                 <i class="fas fa-shield-alt"></i>
                                 <div class="stat-number">100%</div>
-                                <div class="stat-label">ضمان التوصيل</div>
+                                <div class="stat-label">Delivery Guarantee</div>
                             </div>
                         </div>
                     </div>
@@ -966,33 +959,32 @@
                         <div class="slide-image" style="background: linear-gradient(45deg, #ff6b6b, #feca57);">
                             <i class="fas fa-rocket"></i>
                             <div class="image-caption">
-                                صورة مطلوبة: طائرة UPS حديثة (من الثمانينات) مع شعار Next Day Air، موظف يسلم طرد عاجل
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <!-- السلايد 9 - 1988 -->
+            <!-- Slide 9 - 1988 -->
             <div class="slide">
                 <div class="slide-content">
                     <div class="slide-text">
                         <h2><i class="fas fa-plane-circle-check"></i> 1988 - UPS Airlines</h2>
                         <div class="highlight-box">
-                            <p>ولادة UPS Airlines! الشركة تحصل على رخصة طيران خاصة وتصبح شركة طيران مستقلة</p>
-                            <p>البداية كانت بـ 14 طائرة Boeing 727، لكن الأسطول نما بسرعة ليصبح أحد أكبر أساطيل الشحن الجوي في العالم</p>
-                            <p>مطار Louisville في كنتاكي أصبح المحور الرئيسي "Worldport" - أحد أكثر مراكز الشحن تطوراً في العالم</p>
+                            <p>Birth of UPS Airlines! The company obtains a private airline license and becomes an independent airline</p>
+                            <p>It started with 14 Boeing 727 aircraft, but the fleet grew rapidly to become one of the largest air cargo fleets in the world</p>
+                            <p>Louisville Airport in Kentucky became the main hub "Worldport" - one of the most advanced shipping centers in the world</p>
                         </div>
                         <div class="stats">
                             <div class="stat-item">
                                 <i class="fas fa-plane"></i>
                                 <div class="stat-number">14</div>
-                                <div class="stat-label">طائرة في البداية</div>
+                                <div class="stat-label">Aircraft at Start</div>
                             </div>
                             <div class="stat-item">
                                 <i class="fas fa-globe"></i>
                                 <div class="stat-number">Worldport</div>
-                                <div class="stat-label">المحور العالمي</div>
+                                <div class="stat-label">Global Hub</div>
                             </div>
                         </div>
                     </div>
@@ -1000,33 +992,32 @@
                         <div class="slide-image">
                             <i class="fas fa-plane-circle-exclamation"></i>
                             <div class="image-caption">
-                                صورة مطلوبة: طائرة Boeing 727 بألوان UPS البنية المميزة، منظر جوي لمطار Louisville Worldport
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <!-- السلايد 10 - 1999 -->
+            <!-- Slide 10 - 1999 -->
             <div class="slide">
                 <div class="slide-content">
                     <div class="slide-text">
-                        <h2><i class="fas fa-chart-line"></i> 1999 - الاكتتاب العام التاريخي</h2>
+                        <h2><i class="fas fa-chart-line"></i> 1999 - Historic Public Offering</h2>
                         <div class="highlight-box">
-                            <p>بعد 92 عاماً كشركة خاصة، UPS تدخل البورصة في أكبر اكتتاب عام في التاريخ الأمريكي حتى ذلك الوقت</p>
-                            <p>جمعت الشركة 5.47 مليار دولار في يوم واحد! سعر السهم افتتح عند 50 دولار وأغلق عند 68 دولار</p>
-                            <p>هذه الخطوة مكنت UPS من التوسع السريع وشراء شركات جديدة ودخول أسواق جديدة حول العالم</p>
+                            <p>After 92 years as a private company, UPS goes public in the largest IPO in American history at that time</p>
+                            <p>The company raised $5.47 billion in one day! The stock price opened at $50 and closed at $68</p>
+                            <p>This move enabled UPS to expand rapidly, acquire new companies, and enter new markets around the world</p>
                         </div>
                         <div class="stats">
                             <div class="stat-item">
                                 <i class="fas fa-dollar-sign"></i>
                                 <div class="stat-number">$5.47B</div>
-                                <div class="stat-label">قيمة الاكتتاب</div>
+                                <div class="stat-label">IPO Value</div>
                             </div>
                             <div class="stat-item">
                                 <i class="fas fa-percentage"></i>
                                 <div class="stat-number">36%</div>
-                                <div class="stat-label">ارتفاع أول يوم</div>
+                                <div class="stat-label">First Day Rise</div>
                             </div>
                         </div>
                     </div>
@@ -1034,34 +1025,33 @@
                         <div class="slide-image" style="background: linear-gradient(45deg, #00d2ff, #3a7bd5);">
                             <i class="fas fa-chart-line"></i>
                             <div class="image-caption">
-                                صورة مطلوبة: جرس بورصة نيويورك مع مسؤولي UPS، شاشات تداول تظهر رمز UPS
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <!-- السلايد 11 - 2000s -->
+            <!-- Slide 11 - 2000s -->
             <div class="slide">
                 <div class="slide-content">
                     <div class="slide-text">
-                        <h2><i class="fas fa-microchip"></i> العصر الرقمي والابتكار</h2>
+                        <h2><i class="fas fa-microchip"></i> Digital Era and Innovation</h2>
                         <div class="highlight-box">
-                            <p>UPS تحتضن التكنولوجيا: تطبيقات الهواتف الذكية، التتبع اللحظي، والتوقيع الإلكتروني</p>
-                            <p>نظام ORION الثوري يستخدم الذكاء الاصطناعي لتحسين مسارات التوصيل - يوفر 100 مليون ميل سنوياً!</p>
-                            <p>دخول عالم التجارة الإلكترونية بقوة مع خدمات مخصصة للمتاجر الإلكترونية وحلول الإرجاع السهلة</p>
-                            <p>بدء تجارب التوصيل بالطائرات بدون طيار والمركبات الكهربائية للمستقبل المستدام</p>
+                            <p>UPS embraces technology: smartphone apps, real-time tracking, and electronic signatures</p>
+                            <p>The revolutionary ORION system uses artificial intelligence to optimize delivery routes - saving 100 million miles annually!</p>
+                            <p>Strong entry into e-commerce with specialized services for online stores and easy return solutions</p>
+                            <p>Beginning drone delivery experiments and electric vehicles for a sustainable future</p>
                         </div>
                         <div class="stats">
                             <div class="stat-item">
                                 <i class="fas fa-mobile-alt"></i>
                                 <div class="stat-number">My Choice</div>
-                                <div class="stat-label">التحكم بالتوصيل</div>
+                                <div class="stat-label">Delivery Control</div>
                             </div>
                             <div class="stat-item">
                                 <i class="fas fa-brain"></i>
                                 <div class="stat-number">ORION</div>
-                                <div class="stat-label">ذكاء اصطناعي</div>
+                                <div class="stat-label">Artificial Intelligence</div>
                             </div>
                         </div>
                     </div>
@@ -1069,43 +1059,42 @@
                         <div class="slide-image" style="background: linear-gradient(45deg, #667eea, #764ba2);">
                             <i class="fas fa-laptop-code"></i>
                             <div class="image-caption">
-                                صورة مطلوبة: سائق UPS يستخدم جهاز DIAD الإلكتروني، شاشة هاتف تظهر تطبيق UPS، طائرة درون UPS
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <!-- السلايد 12 - اليوم -->
+            <!-- Slide 12 - Today -->
             <div class="slide">
                 <div class="slide-content">
                     <div class="slide-text">
-                        <h2><i class="fas fa-trophy"></i> UPS اليوم - قائد عالمي</h2>
+                        <h2><i class="fas fa-trophy"></i> UPS Today - Global Leader</h2>
                         <div class="highlight-box">
-                            <p>من 100 دولار إلى أكثر من 100 مليار دولار إيرادات سنوية!</p>
-                            <p>UPS اليوم هي أكثر من مجرد شركة شحن - هي شريك لوجستي متكامل يقدم حلولاً للأعمال حول العالم</p>
-                            <p>مع التزام قوي بالاستدامة: هدف الوصول إلى صفر انبعاثات بحلول 2050</p>
+                            <p>From $100 to over $100 billion in annual revenue!</p>
+                            <p>UPS today is more than just a shipping company - it's an integrated logistics partner providing business solutions worldwide</p>
+                            <p>With strong commitment to sustainability: goal to reach zero emissions by 2050</p>
                         </div>
                         <div class="stats">
                             <div class="stat-item">
                                 <i class="fas fa-users"></i>
                                 <div class="stat-number">540K+</div>
-                                <div class="stat-label">موظف عالمياً</div>
+                                <div class="stat-label">Employees Globally</div>
                             </div>
                             <div class="stat-item">
                                 <i class="fas fa-box"></i>
                                 <div class="stat-number">28M</div>
-                                <div class="stat-label">طرد يومياً</div>
+                                <div class="stat-label">Packages Daily</div>
                             </div>
                             <div class="stat-item">
                                 <i class="fas fa-plane"></i>
                                 <div class="stat-number">500+</div>
-                                <div class="stat-label">طائرة</div>
+                                <div class="stat-label">Aircraft</div>
                             </div>
                             <div class="stat-item">
                                 <i class="fas fa-earth-americas"></i>
                                 <div class="stat-number">220</div>
-                                <div class="stat-label">دولة ومنطقة</div>
+                                <div class="stat-label">Countries & Territories</div>
                             </div>
                         </div>
                     </div>
@@ -1119,7 +1108,7 @@
         </div>
     </div>
     
-    <!-- أزرار التحكم -->
+    <!-- Control Buttons -->
     <div class="controls">
         <button class="control-btn" id="prevBtn"><i class="fas fa-chevron-up"></i></button>
         <button class="control-btn" id="playBtn"><i class="fas fa-pause"></i></button>
